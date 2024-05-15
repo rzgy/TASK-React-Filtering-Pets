@@ -1,9 +1,22 @@
 import pets from "../petsData";
 import PetItem from "./PetItem";
-
+import { useState } from "react";
 function PetsList() {
-  const petList = pets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const [Searchy, setSearchy] = useState("");
 
+  const SearchBar = pets.filter((pet) => {
+    if (pet.name.toLowerCase().includes(Searchy.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  const petList = SearchBar.map((pet) => <PetItem pet={pet} key={pet.id} />);
+
+  const handleBar = (e) => {
+    setSearchy(e.target.value);
+  };
   return (
     <section id="doctors" className="doctor-section pt-140">
       <div className="container">
@@ -15,6 +28,7 @@ function PetsList() {
               </h1>
               <div className="input-group rounded">
                 <input
+                  onChange={handleBar}
                   type="search"
                   className="form-control rounded"
                   placeholder="Search"
