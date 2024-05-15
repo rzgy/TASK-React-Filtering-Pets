@@ -3,7 +3,7 @@ import PetItem from "./PetItem";
 import { useState } from "react";
 function PetsList() {
   const [Searchy, setSearchy] = useState("");
-
+  const [type, setType] = useState("");
   const SearchBar = pets.filter((pet) => {
     if (pet.name.toLowerCase().includes(Searchy.toLowerCase())) {
       return true;
@@ -11,9 +11,21 @@ function PetsList() {
       return false;
     }
   });
+  const FilteringPets = SearchBar.filter((pet) => {
+    if (pet.type.includes(type)) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
-  const petList = SearchBar.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const petList = FilteringPets.map((pet) => (
+    <PetItem pet={pet} key={pet.id} />
+  ));
 
+  const PetSelector = (event) => {
+    setType(event.target.value);
+  };
   const handleBar = (e) => {
     setSearchy(e.target.value);
   };
@@ -38,7 +50,7 @@ function PetsList() {
               </div>
               <br />
               Type:
-              <select className="form-select">
+              <select onChange={PetSelector} className="form-select">
                 <option value="" selected>
                   All
                 </option>
